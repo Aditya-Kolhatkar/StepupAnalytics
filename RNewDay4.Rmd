@@ -1,0 +1,268 @@
+---
+title: "Day_4_Data Science using R and MySQL"
+author: "StepUp Analytics"
+date: "18/10/2020"
+output: word_document
+---
+
+# CONTROL FLOW
+
+    Control Flow is the order according to which individual statements, functions or programs are executed. Control flow are like the glue which hold the program. Without them, program will be just a bunch of statements without any meaning.
+    
+    Here we will be discussing about 2 major control flow statements:
+    
+        (a) If decision making statement
+        (b) For Loop
+
+    (A.) IF DECISION MAKING STATEMENT
+    
+        If statements are conditional statements which allows programmer to apply certain pieces of code according to the True condition. There are 4 types of if statements:
+        
+        (a) if statments 
+        (b) if-else statements
+        (c) if-else-if statements
+        (d) nested if statements
+        
+- if statements: In these statements all of the if statements will be executed.
+
+- Example: Now imagine you have some big clients that gives you a lot of work. To keep them happy, you decide to give them a reduction of 10 percent on the price per hour for orders that involve more than 100 hours of work. So, if the number of hours worked is larger than 100, you calculate the new price by multiplying the price by 0.9.
+
+```{r}
+priceCalculator <- function(hours, pph = 40) {
+  net.price <- hours * pph
+  if (hours > 100) {
+    net.price <- net.price * 0.9
+  }
+  return(net.price)
+}
+
+priceCalculator(99)
+
+```
+
+- if-else statements: In this, there are only two conditions, and one which is true will be executed
+
+- Example: We want to examine whether a variable stored as "quantity" is above 20. If quantity is greater than 20, the code will print "You sold a lot!" otherwise Not enough for today.
+
+```{r}
+x <- 19
+
+if (x > 20) {
+  print('You Sold a Lot. Hurray!!!')
+} else{
+  print('Not enough for today')
+}
+```
+
+- if-else-if statements: In this, there can be as many conditions as we want, and one which will be true according to the given data will be executed.
+
+- Example: We are interested to know if we sold quantities between 20 and 30. If we do, then print "Good day". If quantity is > 30 we print What a "Amazing day!", otherwise Not enough for today.
+
+You can try to change the amount of quantity.
+
+```{r}
+x = 8
+
+if (x<20) {
+  print('Not enough for today !!!')
+} else if (x >= 20 && x <= 30) {
+  print('Good Day !!!')
+} else {
+  print('Amazing Day !!!')
+}
+```
+
+- nested if statements: In this, we can nest as many if statements inside the if statements according to our needs.
+
+- Example: This R Nested If Else program allows the user to enter their age, and then we are going to store it in the variable "my.age". If the user-specified age is less than 18, we are going to print two statements. If the condition fails, we check one more condition (R Nested If Else), if it succeeds, we print something. And If the nested condition fails, we print some other thing.
+
+```{r}
+# Nested IF Else in R Programming Example
+
+my.age <- as.integer(readline(prompt="Please Enter your Age: "))
+
+if (my.age < 23) {
+  print("You are Not a Major.") 
+  print("You are Not Eligible to Work")
+} else {
+  if (my.age >= 23 && my.age <= 60 )  {
+    print("You are Eligible to Work")
+    print("Please fill the Application Form and Email to us")
+  } else {
+    print("As per the Government Rules, You are too Old to Work")
+    print("Please Collect your pension!")
+  }  
+}
+```
+
+      (B.) FOR LOOPS
+
+For loop iterates over a sequence of numbers or elements of a list or a vector and apply the given condition on all of them.
+
+In for loop we basically repeat a certain condition over a variable or a list or any other elements definite number of times.
+
+```{r}
+for (i in seq(5)) {
+  # When no starting point is specified, 1 is taken as the starting point and 1 is taken as the difference.
+  print(i + 1)
+}
+```
+
+```{r}
+# Iterating over a matrix
+a = matrix(seq(2, 20, by = 2), nrow = 2, ncol = 5) # dimension of a 2 X 5
+
+1:nrow(a)
+1:ncol(a)
+
+r <- 1
+c <- 1
+
+
+for (r in 1:nrow(a))
+  for (c in 1:ncol(a))
+    print(paste("Row", r, "and column", c, "have values of", a[r, c])) 
+```
+
+# FUNCTIONS
+
+    Functions are bunch of statements or instructions that are put together to perform a particular task again and again. R has a number of built-in functions like print(), input(), range() and many more but a user can define a function as well and pass as many parameters as they want. A user can pass no parameter to a function as well.
+    
+    # Types of Functions 
+    
+        (a) User-defined functions
+        (b) Built-in functions
+
+    
+      (A) User-defined functions
+
+    Functions are defined using the keyword "function". This keyword is written before defining a function.
+    
+    Syntax:  function_name = function(parameters){
+                               statements               
+                                }
+                                
+            This is the syntax to define a function.
+            
+    To call a function:
+            
+                function_name(parameter)    
+
+    PARAMETERS: (a) Parameters are the values that are passed to the functions, so that the function can perform the required task. 
+        
+       (b) A function can have no parameter as well. 
+        
+       (c) A good code does not have more than 3 parameters for a function and the ideal number of  parameters for a function is zero.
+        
+       (d) If a parameter is specified in a function, then that function needs to have that many arguments for that parameter to work. No more, no less than that. Otherwise, you will get an error.
+
+```{r}
+func = function(x) {
+  for (i in 1:x) {
+    print(i ^ 2)
+  }
+}
+func(5)
+
+# create a function to calculate mean (take 2 values as an argument)
+a = 5  
+b = 10
+
+a = 6  
+b = 11
+
+a = 7  
+b = 12
+
+a = 8 
+b = 13 
+
+a = 9 
+b = 14
+
+
+
+```
+
+```{r}
+hello = function() {
+  #Function with no parameter
+  print('Good Morning')
+}
+ 
+hello()
+```
+    - We can pass default values to a parameter as well.
+
+```{r}
+hello1 = function(name='Babita'){                     #Function with parameter
+    if (typeof(name)== 'character'){
+        cat('Good Morning ',name)
+    }else{
+        print('Wrong Entry')}
+}
+
+hello1("Zishan") #Default values is used when no value to the parameter is assigned to a function.
+
+```
+
+        - We can also shuffle the sequence of parameters in R.
+    
+```{r}
+hello2 = function(fname, lname) {
+  #Function with parameter
+  if (typeof(fname) == 'character' & typeof(lname) == 'character') {
+    cat('Good Morning ', fname, lname)
+  } else{
+    print('Wrong Entry')
+  }
+}
+
+hello2("Babita", "Gupta")
+```
+    
+- Return Statement: This function is used to let a function return a value.
+
+```{r}
+add = function(a,b){
+  x = a+b
+  return(x)
+}
+
+add(2,10)
+```
+
+Question: Create a function to Multiply two numbers using return statement and then multiply 15*17
+
+```{r}
+mul = function(a,b){
+  x = a*b
+  return(x)
+}
+
+mul(15,17)
+```
+
+Question: Create a function to check the maximum of the three input numbers.
+
+```{r}
+
+```
+
+Question: Create a function for "Hello 'Name'".
+
+```{r}
+fun1 = function(){
+  name = readline(prompt = "Enter Name")      
+  cat('Hello', name)
+}
+
+fun1()
+```
+
+
+        (B.) BUILT-IN FUNCTIONS
+        
+        R has a number of built-in functions like seq() (which gives numbers specified in the range according to the parameters), mean() ( which returns the mean of the data), max() (which returns the maximum value of the data) and many more.
+
+##################################################### END #################################################

@@ -1,0 +1,116 @@
+### getting and setting working directory ###
+
+getwd() #getwd() function helps us to output the current working directory
+path <-
+  "D:/S/StepUp_Online Course/Project Based Learning - Data Science and Analytics using R and MySQL/Course Content/Logistic Regression/Titanic"
+
+setwd(path) #setwd() function helps to set working directory
+
+### installing the desired packages ###
+
+#install.packages("dplyr") #helps in data manipulation
+
+library(dplyr)
+
+### reading data ###
+
+titanic <- read.csv("Titanic.csv", header = TRUE, stringsAsFactors = FALSE, na.strings = c("","NA"))
+dim(titanic)
+names(titanic)
+
+# Data Preprocessing
+
+### dropping the variables from the data through judgement ###
+
+D1 <- subset(titanic, select = c(2, 3, 5, 6, 7, 8, 10))
+dim(D1)
+
+### exploring variables ###
+
+names(D1)
+table(D1$Pclass)
+table(D1$Sex)
+table(D1$SibSp)
+table(D1$Parch)
+
+### treating variable sex ###
+
+D2 <- mutate(D1, sex1 = ifelse(D1$Sex == 'male', 1, 0))
+D2$Sex <- D2$sex1
+D2 <- D2[, -8]
+table(D2$Sex)
+
+# Missing Data:
+
+### checking missing values ###
+
+sapply(D2, function(x){sum(is.na(x))})
+
+### treating missing values of age ###
+
+D2$Age[is.na(D2$Age)] <- mean(D2$Age,na.rm=T)
+
+### Assumption of logistic regression ###
+
+# 1. First, binary logistic regression requires the dependent variable to be binary
+
+# 2. Second, logistic regression requires the observations to be independent of each other.  
+#    In other words, the observations should not come from repeated measurements or matched data.
+
+# 3. Third, logistic regression requires there to be little or no multicollinearity among the independent variables.  
+#    This means that the independent variables should not be too highly correlated with each other.
+
+# 4. Fourth, logistic regression assumes linearity of independent variables and log odds.
+#    Although, this analysis does not require the dependent and independent variables to be related linearly, 
+#    it requires that the independent variables are linearly related to the log odds.
+
+### logit = log(p/1-p) = beta0 + beta1*X1 + error
+
+# model <- glm(Survived ~., 
+#              family = binomial(link = "logit"), 
+#              data = D3)
+# 
+# # Predict the probability (p) of diabete positivity
+# ?predict
+# probabilities <- predict(model, type = "response")
+# head(probabilities)
+# predicted.classes <- ifelse(probabilities > 0.5, "pos", "neg")
+# head(predicted.classes)
+
+### spliting the data in train and test ###
+
+train <- D2[1:668,]
+test <- D2[669:892,]
+
+### model ###
+
+model <- glm(Survived ~ ., family = binomial(link = "logit"), data = train)
+summary(model)
+model_pred <- model$fitted.values
+model_prediction <- as.factor(ifelse(model_pred > 0.5, 1,0))
+actualdep <- as.factor(train$Survived)
+#install.packages("caret")
+library(caret)
+confusionMatrix(actualdep, model_prediction)
+
+### final model taking the significant variables ###
+
+model1 <- glm(Survived ~ Pclass + Sex + Age + SibSp, family = binomial(link = "logit"), data = train)
+summary(model1)
+model1_pred <- model1$fitted.values
+head(model1_pred)
+
+### accuracy check of training model ###
+
+model1_pred_0_1 <- as.factor(ifelse(model1_pred > 0.5, 1, 0))
+actualdep <- as.factor(train$Survived)
+confusionMatrix(actualdep, model1_pred_0_1)
+
+### accuracy check of test data set ###
+
+test_pred <- predict(model1, newdata = subset(test, select = c(2,3,4,5)), type = "response")
+pred_test <- as.factor(ifelse(test_pred>0.5,1,0))
+actual_test <- as.factor(test$Survived)
+confusionMatrix(actual_test, pred_test)
+
+####################################################### END ##############################################

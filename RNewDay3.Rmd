@@ -1,0 +1,345 @@
+---
+title: "Day_3 Data Science using R and MySQL"
+author: "StepUp Analytics"
+date: "17/10/2020"
+output: word_document
+---
+
+# DPLYR PACKAGE
+
+This package helps us in data manipulation with dataframes. 
+
+It provides various functions that helps us to implement various data manipulation tasks:
+
+                - filtering of rows, 
+                - selecting specific columns,
+                - re-ordering rows,
+                - adding new columns,
+                - group_by
+                - summarizing data.
+
+(A.) INSTALLATION
+
+- To install dplyr
+
+install.packages("dplyr")
+
+- To load dplyr
+
+library(dplyr)
+    
+```{r}
+install.packages("dplyr")
+
+library(dplyr)
+```
+    
+```{r}
+df = data.frame(
+  Name = c(
+    rep("Sundar Pichai", 3),
+    rep("Satya Nadella", 3),
+    rep("Ritesh Agarwal", 3)
+  ),
+  Subject = c(rep(c(
+    "Maths", "Science", "English"
+  ), 3)),
+  Theory.Marks = c(40, 50, 60, 40, 50, 60, 45, 50, 70),
+  Practical.Marks = c(10, 15, 18, 13, 12, 16, 18, 10, 16),
+  Grade = c("D", "D", "C", "D", "C", "C", "D", "C", "B")
+)
+head(df, 9) # View a data
+```
+    
+(B.) IMPORTANT FUNCTION OF DPLYR LIBRARY
+
+select()	    select columns
+filter()	    filter rows
+arrange()	    re-order or arrange rows
+mutate()	    create new columns
+summarise()	  summarise values
+group_by()	  allows for group operations in the "split-apply-combine" concept
+    
+    
+  1. SELECT FUNCTION
+  
+  - Here we will try to select Name, Subject and Grade column using select function.
+  
+```{r}
+select(df, c(1,2,5))
+head(df, 9)
+
+#Assignment: Filter column Name, Subject and Grade using Indexing
+
+```
+  
+  - Selecting all columns except one or two columns
+    
+```{r}
+select(df, -Grade)
+```
+    
+  - When we want to select all columns ending with some particular letters or words.
+  
+```{r}
+select(df, ends_with('Marks'))
+```
+  
+  There is a similar function to search a group of columns start with some particular letters i.e. ' start_with() '
+
+There are many in-built arguments with select:
+    
+    - starts_with(), ends_with(), contains()
+
+To have more information on these above functions, you can use the help section.
+
+```{r}
+?select
+help("select")
+??select
+```
+  
+ (2.) FILTER FUNCTION
+ 
+ This function helps us in filtering of rows under certain conditions.
+ 
+```{r}
+?filter
+
+filter(df, Subject == "Maths")
+
+#Assignment: Filter subject = "Maths" using Indexing
+df[df$Subject =="Maths", ]
+
+```
+ 
+ - We can also have more than one condition.
+ 
+```{r}
+filter(df, Subject == "Science", Grade == "C")
+
+##Ass:  Put above the two condition and output the required row.
+df[df$Subject =="Science" && df$Grade== "C"]
+
+```
+  
+  (C.) ARRANGE FUNCTION
+  
+  This function helps in reordering the rows.  It takes a data frame, and a set of column names to order by.
+
+```{r}
+arrange(df, Theory.Marks)
+```
+
+If you provide more than one column name, each additional column will be used to break ties in the values of preceding columns
+
+```{r}
+arrange(df, desc(Theory.Marks), desc(Practical.Marks))
+```
+ 
+  (D.) MUTATE FUNCTION
+  
+  This function helps us to create new columns.
+  
+```{r}
+mutate(df, Total.Marks = Theory.Marks + Practical.Marks)
+```
+  
+  (E.) SUMMARISE FUNCTION
+  
+   This function will create summary statistics for a given column in the data frame such as finding the mean.
+  
+   There are many other summary statistics you could consider 
+            
+            - sd(), 
+            - min(), 
+            - max(), 
+            - median(), 
+            - sum(), 
+            - n() (returns the length of vector), 
+            - first() (returns first value in vector), 
+            - last() (returns last value in vector) and 
+            - n_distinct() (number of distinct values in vector).
+  
+```{r}
+summarise(
+  df,
+  avg = mean(Theory.Marks),
+  min = min(Theory.Marks),
+  max = max(Theory.Marks),
+  total = n()
+)
+```
+  
+  (F.) GROUP_BY FUNCTION
+  
+  When we want to split a dataframe by a specifc variable then we use group_by function. Summarise function works better with group by function.
+  
+  Here after grouping the data by the variable 'Name' , we are applying the summarise function to the each row of the dataframe.
+
+```{r}
+df
+u = group_by(df, Name)
+
+summarise(
+  u,
+  total.marks = sum(Theory.Marks)
+) %>% mutate(total.percentage = paste0(total.marks/300*100,"%"))
+
+#Assignment: Can we perform this of subject column?
+```
+
+# GGPLOT2
+
+ggplot2 is a data visualisation library. It helps us to create complex plots from data in a data frame.
+
+- ggplot2 works only with dataframes and not with individual vectors.
+
+  (A.) INSTALLATION
+  
+```{r}
+install.packages("ggplot2")
+library(ggplot2)
+
+help("iris")
+data(iris)
+head(iris)
+```
+ 
+ STEPS OF FORMING A PLOT USING GGPLOT2
+ 
+      1. All the plots in ggplot2 starts with calling ggplot() function and an empty graph is made after calling this function.
+      
+      2. aes(): specify the x and y coordinates for a 2D graph.
+      
+      3. type of graph: Then we also specify the type of graph that we want to make like 
+              
+              geom_point() for scatter plot
+              geom_histogram() for histogram
+              box_plot for Outlier.
+              
+      4. xlab and ylab: Naming of x-axis and y-axis
+      5. ggtitle: add a title to your graph
+      
+    1. SCATTER PLOTS
+    
+      - Scatter Plots are used to display the relationship between two continuous variables.
+      
+      - We can use it to compare one continuous and one categorical variable or two categorical variables.
+      
+      - To create a scatter plot in R using ggplot2, we use geom_point() parameter.
+ 
+      - We can even change the size, shape and colour of the dots of the scatter plot using different parameters of geom_point() function.
+
+
+```{r}
+names(iris)
+x = ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width))  +
+  geom_point()  +
+  xlab("Length of Sepal") +
+  ylab("Width of Sepal")  +
+  ggtitle("Characteristics of Sepal")
+
+plot(x)
+```
+
+In the graph below we increased the size of the dots, changed its border to red and filled the dots with yellow colour.  
+
+You can move around with the shape and size numbers to get the shape and size that you want.
+
+```{r}
+y = ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point(color = "red", size = 6)
+
+# add ggtitle, name of the x-axis and y-axis etc
+plot(y)
+```
+  
+    
+     2. HISTOGRAM
+     
+       - It is mainly used to visualise a single continuous variable and learn more about its shape and distribution.
+       
+       - We can create a histogram using geom_histogram() function.
+       
+       - binwidth parameter helps us to determine the width of the bars of a histogram.
+       
+       - We can change the colour and line of the bins just like we did in scatter plots.
+     
+```{r}
+?geom_histogram
+
+h = ggplot(iris, aes(x = Petal.Length)) + geom_histogram() + xlab("Length of Petal") + ylab("Count") + ggtitle("XXX")
+
+plot(h)
+```
+      
+```{r}
+h1 = ggplot(iris, aes(x = Petal.Length)) +
+  geom_histogram(
+    binwidth = 0.1,
+    color = "red",
+    linetype = "dashed",
+    fill = "black"
+  )
+
+plot(h1)
+```
+ 
+```{r}
+h2 = ggplot(iris, aes(x = Petal.Length)) + geom_histogram(
+  binwidth = 0.2,
+  color = "blue",
+  fill = "grey",
+  linetype = "dashed"
+) +
+  ggtitle("Histogram for Petal Length") +
+  xlab("Petal Length") +
+  ylab("Count")
+
+plot(h2)
+```
+
+      3. BOX PLOT
+      
+        - Box Plot is mainly used for representing a group of numerical data through their quartiles. 
+    
+        - Box Plots may have lines extending from the boxes which are called whiskers indicating variation in the data outsite the upper and lower quartiles.
+    
+        - A boxplot is a standardized way of displaying the dataset based on a five-number summary: the minimum, the maximum, the sample median, and the first and third quartiles.
+        
+        
+```{r}
+ggplot(iris, aes(x = Sepal.Width)) +
+        geom_boxplot()
+boxplot(iris$Sepal.Width)
+help("boxplot")
+```
+ 
+ Representation: 
+ 
+                    The center line inside the box in the above graph represents the median which is about 3. 
+    
+                    The whiskers at the both ends of the box represents the range of the data i.e. the distance between the smallest and the largest value. In the above data, the value ranges from 2 to 4.4 (approx) which also includes the outliers.
+                    
+                    The Outliers of the data are represented by the small circular hollow dots outside this range. If we ignore the outliers the range is represented as the distance between the two horizontal lines.
+                    
+                    The Quartiles of the data are represented by the box, the top of the box represents Q3 i.e. 3.25 (approx) and the bottom of the box represents Q1 i.e. 2.75 (approx).
+                    
+                    Since the most of the data is represented in the middle, therefore the distribution is symmetric.
+ 
+```{r}
+View(iris)
+ggplot(iris, aes(x = Species, y = Sepal.Width)) +
+        geom_boxplot()
+```
+ 
+```{r}
+?geom_boxplot
+```
+    
+Ques: Create a Scatter plot between Species and Petal Width and a histogram for Petal Width.
+
+```{r}
+
+```

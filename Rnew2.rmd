@@ -1,0 +1,445 @@
+---
+title: "Day_2 Data Science using R and MySQL"
+author: "StepUp Analytics"
+date: "11/10/2020"
+output: word_document
+---
+
+# DATA STRUCTURES
+
+  R gives us 6 types of data structures:
+    
+    (a) Vectors
+    (b) Matrices
+    (c) Data frames
+    (d) Lists
+    (e) Arrays
+    (f) Factors
+    
+    a. VECTORS
+    
+        - A vector is just a sequence of elements of the same data type created using command.
+        
+        - An empty vector can also be created using ' vector() ' command. This command will create an empty logical vector.
+        
+        - If you want to have an integer vector then you will have to use as.integer() function specifically.
+        
+```{r}
+x = c(1,2,3,4)  # numeric
+y = c('a','b','c')   # character
+z = c(TRUE, FALSE, TRUE, TRUE)  # Logical
+u = c(as.integer(35.7,24.6,68.5))  # Integer
+
+print(class(x))
+print(class(y))
+print(class(z))
+print(class(u))
+```
+        
+  Functions for extraction features about the vectors::
+      
+       length() : To find out the length of a vector
+       class() : To find the data type 
+       str() : used to display components of a list or a vector.
+       summary() : For Descriptive statistics
+
+```{r}
+x
+length(x)
+summary(x)
+str(x)
+```
+
+                        ADDING ELEMENTS TO A VECTOR
+
+    We can add elements to a vector by two ways:
+    
+      (1) By directly adding the element using c command.
+      (2) By combining two vectors.
+    
+```{r}
+x
+new = c(x,'no')
+new1 = c(y,z)
+print(new)
+print(new1)
+```
+
+We can clearly see that when we tried to add a string into a vector, R automatically converted the whole vector into a character vector. This is called 'Implicit Coercion'
+
+                              VECTOR INDEXING
+
+    Indexing is used to retreive values from a vector using square brackets.
+    
+    Indexing are of two types:  - Positive Indexing
+                                - Negative Indexing
+        
+    If the index is negative, it would strip the member whose position has the same absolute value as the negative index.
+    
+    If an index is out-of-range, a missing value will be reported via the symbol NA.
+    
+    A vector can be indexed using a numeric index vector as well which has positions of the elements of the vector we want to index. 
+    
+
+```{r}
+new
+new[1] # Accessing the second element of the new vector.
+
+new[2:5] # Accessing all elements fromm 2nd to 5th element.
+
+new[4:7] # Accessing all the elements from 4 to 7 but since 6th and 7th elements do not exist that is why it is returning NA.
+
+new[-3]  # Negative Indexing
+
+new[c(2, 4)]  # Indexing using numeric index vector.
+```
+
+                            NAMING VECTOR MEMBERS
+
+    We can give a heading or a name to each element of a vector as well.
+    
+```{r}
+
+m1 = c('Anisha', 23)
+names(m1) = c('Name', 'marks')
+m1
+
+```
+```{r}
+#Assignment: letters is predefined function in R which consists of small letter alphabets. Now store "letters" in variable named "name". Assign each letter with a header name 1, 2, ..., 26 and do indexing to print your name.
+
+#Answer
+```
+
+    
+                                              B. MATRICES
+      
+      A matrix is a collection of data elements arranged in a two-dimensional rectangular layout. It is similar to vectors but here we take dimension attribute into account as well.
+      
+```{r}
+mat = matrix(seq(3, 30, by = 3), nrow = 2, ncol = 5, byrow = TRUE)
+mat
+```
+      
+To name the rows and columns of the matrix:
+
+```{r}
+mat = matrix(
+  seq(3, 30, by = 3),
+  nrow = 2,
+  ncol = 5,
+  dimnames = list(c('A', 'B'), c('V', 'W', 'X', 'Y', 'Z'))
+)
+mat
+```
+
+Another way of creating a matrix is by using cbind and rbind.
+   cbind creates matrix by columns.
+   rbind creates matrix by rows.
+
+```{r}
+mat2 = cbind(c(3, 26, 2, 6, 8), c(1, 3, 5, 6, 10))
+mat3 = rbind(c(1, 2, 3), c(4, 5, 6))
+print(mat2)
+print(mat3)
+```
+                        
+                                      ADDING NEW ROWS AND COLUMNS 
+
+If we want to add new rows or columns in the matrix then we need to keep the dimension of the matrix in mind.
+
+Like here we are trying to add a new column in the matrix mat2, whose dimensrions are 5X2 and if we want to add a new column then the new vector must have the required number of elements.
+
+```{r}
+n = c(1, 2, 3, 4, 5)
+mat3 = cbind(mat2, n)
+mat3
+
+c = c(6, 7, 8)
+mat4 = rbind(mat3, c)
+mat4
+```
+     
+                           Indexing of Matrix/ACCESSING THE ELEMENTS OF A MATRIX
+
+    (1.) We can access elements of a matrix using indexing but indexing in matrices is a little different than indexing in vectors and lists.
+    
+    (2.) Elements can be accessed as ' var[row, column] '. Here rows and columns are vectors.
+    
+    (3.) We specify the row numbers and column numbers as vectors or a specific element and use it for indexing.
+    
+    (4.) If any field inside the bracket is left blank, it selects all.
+
+    (5.) We can use negative integers to specify rows or columns to be excluded.
+    
+```{r}
+mat
+
+print(mat[2, 5]) # Accessing only a single element
+print(mat[c(1, 2), c(1, 2, 3)])  # Accessing 2 rows and 3 columns of a matrix.
+
+print(mat[1, ])
+```
+
+                                           MATRIX COMPUTATION
+
+We can apply various operations on matrices in R but the dimensions of the matrices should be same for that to work.
+
+```{r}
+a = matrix(c(1, 2, 3, 4), nrow = 2, ncol = 2, byrow = TRUE) # dimension of a 2 X 2
+b = matrix(c(2, 3, 4, 5), nrow = 2, ncol = 2, byrow = TRUE) # dimension of b 2 X 2
+
+print(a + b)
+print(a - b)
+print(a * b)
+print(a / b)
+```
+
+When we do multiplication and division with this method, operations are done from one element to another corresponding element.
+
+```{r}
+print(a)
+
+t(a)  # Transpose of a matrix
+```
+                                         
+                                          MATRIX Modification
+                                          
+```{r}
+a
+a[2,2] <- 6 # modify single element
+a[a <= 2] <- 0 # modify elements less than 3 to 0
+```
+
+```{r}
+# Assignment: create a matrix "dial_pad", like your phone's dialing pad, do the necessary modification for the same. Index your phone/whatsapp number.
+# Hint: You'll have to create 10*10 matrix and pull the diagnal to print your phone/whatsapp number.
+
+#Answer:
+
+```
+
+                                            C. DATA FRAMES
+      
+A data frame is being used for storing data tables, the vectors that are contained in the form of a list in a data frame are of equal length.      
+      
+      
+```{r}
+df = data.frame(
+  rollno = c(1:10),
+  names = c(
+    'aman',
+    'vicky',
+    'kiran',
+    'rachel',
+    'joey',
+    'ross',
+    'chandler',
+    'janice',
+    'phoebe',
+    'owen'
+  ),
+  marks = c(65, 76, 43, 77, 23, 55, 76, 43, 76, 23)
+)
+```
+
+1. If we want to get some information about the dataframes then we can use str() or summary functions.
+    
+    str() function will tell us about the structure of the data frame.
+    
+    summary() function will give us the statistical summary and the nature of the data from the dataframe.
+    
+```{r}
+df
+str(df)
+summary(df$marks)
+```
+
+                                  ADDING DATA INTO A DATAFRAME
+
+Data can be added into a dataframe using two methods:
+        
+        (a.) Using $ operator to add a new column 
+        
+        (b.) Using rbind()/cbind functions to add new rows/columns.
+        
+```{r}
+# Adding a new column called subject into the dataframe using $ operator.
+df
+df$subject = c(
+  'math',
+  'science',
+  'hindi',
+  'english',
+  'math',
+  'science',
+  'english',
+  'math',
+  'hindi',
+  'science'
+)
+df
+```
+        
+```{r}
+# Using rbind() to add two more rows into the dataframe.
+
+df1 = data.frame(
+  rollno = c(11:12),
+  names = c('rick', 'morty'),
+  marks = c(100, 76),
+  subject = c('Science', 'hindi')
+)
+
+final = rbind(df, df1)
+final
+str(final)
+dim(final)
+
+# OR
+
+# rbind(df, list(
+#   c(11, 12),
+#   c('rick', 'morty'),
+#   c(100, 76),
+#   c('everything', 'hindi')
+# ))
+```
+    
+                          ACCESSING DATA FROM DATAFRAME
+
+Data can be accessed from a dataframe by two ways:
+        
+        (a.) By extracting specific column from a dataframe using ' $ ' operator.
+        
+        (b.) Using Indexing
+
+```{r}
+df
+marks <- df$marks # Extracting marks column using $ operator.
+df[1:2, ] # extracting only first two rows and all the columns.
+df[c(1, 5), c(2, 3)]  # extracting 1st and 5th and 2nd and 1st column.
+```
+
+```{r}
+# We can access elements under condition as well. Here we trying to access data of selective students who have marks greater than 50 with all the columns
+df
+df[df$marks > 50, ]
+```
+
+```{r}
+# Assignment: 
+# 
+# 1. filter only rows where subject equals "maths"
+# 2. filter rows where "marks" greater than 65 and subject equals "math"
+# 3. filter rows where "marks" less than 40 (failed students)
+
+# Answer:
+
+```
+
+                              DELETING A COMPONENT
+                              
+Data frame columns can be deleted by assigning NULL to it.
+
+Similarly, rows can be deleted through reassignments.
+
+```{r}
+final
+final$marks = NULL
+
+final
+
+final = final[-4,]
+
+final
+```
+
+
+        D. LISTS
+
+(a) Lists are unlike arrays which can save different kinds of data types. It is an ordered sequence of items.
+
+(b)  List is created using list() function.
+
+(c) We can even nest a list inside a list.
+
+(d) A vector having all elements of the same type is called atomic vector but a vector having elements of different type is called list.
+
+```{r}
+l = list("StepUp", "Analytics", c(11, 45, 78), FALSE, 56.9)
+typeof(l)
+```
+
+                              ACCESSING ELEMENTS OF A LIST
+
+Accessing elements of a list is very similar to that of vector. We can simply use positive and negative indexing just like before.
+
+```{r}
+l[1]
+l[c(2,5)]
+```
+
+A list works almost exactly like vectors but the only key difference is that vectors do not allows adding of different types of data objects but in lists, we add any types of data objects.
+
+      E. ARRAYS
+      
+(a) R arrays are the data objects which can store data in more than two dimensions. An array is created using the array() function.
+
+(b) It's syntax is same as that of matrices.
+
+(c) It is also called multi-dimensional Data structure.
+
+```{r}
+# Create two vectors of different lengths.
+
+x1 <- c(1, 2, 3)
+x2 <- c(99, 98, 97, 96, 95, 94)
+
+# Take these vectors as input to the array.
+
+arr = array(c(x1, x2),
+            dim = c(3, 3, 2))
+print(arr)
+
+# Naming Columns and Rows
+col.names <- c("C1", "C2", "C3")
+row.names <- c("R1", "R2", "R3")
+mat.names <- c("M1", "M2")
+
+result <-
+  array(
+    c(x1, x2),
+    dim = c(3, 3, 2),
+    dimnames = list(row.names, col.names,
+                    mat.names)
+  )
+print(result)
+```
+
+                                          INDEXING OF ARRAY
+
+The basic concept of indexing is same as we have discussed earlier but in indexing of arrays, we need to specify the matrix that we are indexing as well.
+
+      Syntax:    array[rows, column, matrix]
+
+```{r}
+arr[3,2,1]  # Accessing the value from 3rd row, 2nd column and 1 matrix.
+
+arr[1,,]  # Here we did not specify the matrix so it showed me the first row from both of the matrices.
+```
+                                             F. FACTORS
+
+Factors data structure takes only predefined number of entries. Factor variables are also resemble as categorical variables.
+
+```{r}
+data = c(5,6,6,6,7,5,7,6,7,5,6,7)
+factor_data = factor(data)
+factor_data
+class(data)
+```
+
+Accessing and modifying an element in a factor is same as that of vectors and lists.
+
+
+############################################ END ############################################

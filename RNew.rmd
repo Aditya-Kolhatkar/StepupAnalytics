@@ -1,0 +1,259 @@
+---
+title: "Day_1_Data Science using R and MySQL"
+author: "StepUp Analytics"
+date: "9/21/2020"
+output: word_document
+---
+
+# KEYWORDS AND IDENTIFIERS
+
+Keywords
+
+1. Keywords are the reserved words that have a predefined meaning which cannot be used as the name of a function, class or any variable or any other object.
+
+For example, "For" is a keywords already defined in the R, used for looping.
+
+2. To get information on Keywords, we can use two methods 
+              (a) help("reserved")
+              (b) ?reserved
+              
+```{r}
+help("reserved")
+?reserved
+```
+
+Identifiers
+
+1. Identifiers are the user defined names of the functions, variables, or any other objects. 
+
+2. Rules of creating an Identifier:
+
+    (a) Identifiers can be a combination of letters, digits, period (.) and underscore (_).
+    
+    (b) It must start with a letter or a period. If it starts with a period, it cannot be followed by a digit.
+    
+    (c) Reserved words in R cannot be used as identifiers.
+
+3. Examples of some valid Identifiers:
+    Iter
+    Step_up_123
+    .analytics
+
+4. Examples of some invalid Identifiers:
+    9sample
+    @yes
+    .1bc
+
+5. Identifiers are case sensitive.
+
+# OPERATORS
+
+Operators are used to perform operations on variables.
+    
+          There are 5 types of Operators:
+          
+          (a) Assignment Operators
+          (b) Arithmetic Operators
+          (c) Relational Operators
+          (d) Logical Operators
+          (e) Miscellaneous Operators
+
+(a) ASSIGNMENT OPERATOR assigns values to the variables.
+            
+          There are 5 types of assignment operators:
+      
+           =  Assigns right side value to left side operand	
+          <-	Assigns right side value to left side operand	
+          ->	Assigns left side value to right side operand	
+          <<-	Assigns right side value to left side operand	
+          ->>	Assigns left side value to right side operand
+
+```{r}
+a = 34
+print(a)
+
+a <- "TRUE"
+print (a)
+
+41 -> a
+print (a)
+
+a <<- 29
+print (a)
+
+c(4, 5, 19) ->> a
+print (a)
+```
+
+ (b) Arithmetic Operators performs various arithmetic operations like addition, subtraction, multiplication and so on. 
+
+There are 7 types of Arithmetic Operators:
+      
+          " + "   Addition, 
+          " / "   Division, 
+          " %% "  Remainder, 
+          " %/% " Quotient, 
+          " ^ "   Power of, 
+          " - "   Subtraction , 
+          " * "   Multiplication ,
+
+```{r}
+a = 46
+b = 3
+cat ("Addition =", a + b)        #addition
+cat ("Subtraction =", a - b)     #subtraction
+cat ("Multiplication =",  a * b) #multiplication
+cat ("Division =", a / b)        #Division
+cat ("Remainder =", a %% b)      #Remainder
+cat ("Quotient =", a %/% b)      #Quotient
+cat ("Power =", a ^ b)           #Power of
+```
+
+```{r}
+#Assignment1: create 3 variables as "a", "b", "c" and assign 5 to each variable. Use the arithmetic operators to get the output as 6.
+
+#Answer:
+
+#Assignment2: create 3 variables as "d", "e", "f" and assign 3 to each variable. Use the arithmetic operators to get the output as 6.
+
+#Answer:
+
+#Assignment3: create 3 variables as "g", "h", "i" and assign 5, 6 and 7 resp. Use the arithmetic operators to get the output as 6.
+
+#Answer:
+```
+
+  (c) RELATIONAL OPERATORS compares the values and tells us about the relation between them.
+        
+      There are various types of comparison operators like:
+            " == " checks if the two values are equal or not
+            " != " checks if the two values are not equal or not
+            " > "  checks if left value is greater than the right one or not
+            " < "  checks if the right values is greater than the left one or not
+            " >= " checks if the left value is greater or equal to the right one or not
+            " <= " checks if the right value is greater or equal to the left one or not
+            
+```{r}
+a <- 46
+b <- 3
+
+print (a == b) #equal to
+print (a != b) #not equal to
+print (a > b)  #greater than
+print (a < b)  #less than
+print (a >= b) #less than or equal to
+print (a <= b) #greater than or equal to
+```
+ 
+ (d) LOGICAL OPERATORS are the operators used to combine one or more than one condition.
+ 
+           Types of Logical Operators:
+           
+           &	Element wise logical AND operation.
+           |	Element wise logical OR operation.
+           !	Element wise logical NOT operation.	
+
+& and | performs element-wise logical operation i.e. if there are two vectors then this operand will operate on each element.
+
+```{r}
+a <- 22
+b <- 33
+c <- 21
+d <- 23
+
+a < d & b > c
+# logical AND element wise
+
+a > d | b > c
+print(c | d)   # logical OR element wise
+
+e <- TRUE
+print(!e)      # logical NOT element wise
+```
+
+```{r}
+age <- 80
+if (!(age > 18)) {
+  print("You are Too Young")
+} else if(age > 18 & age <= 35) {
+  print("Young Guy")
+} else if(age == 36 | age <= 60) {
+  print("You are Middle Age Person")
+} else {
+  print("You are too Old")
+}
+```
+  
+   (e) MISCELLANEOUS OPERATORS are the operators that does not fall into any category.
+   
+        There are 3 types of miscellaneous operators:
+         :	Creates series of numbers from left operand to right operand	
+          
+        %in%  used to check if an element(a) belongs to a vector(b)
+          
+        %*% Performs multiplication of a vector with its transpose
+ 
+```{r}
+a = 1:30
+print (a)
+
+a = c(5, 7, 26)
+b = 7
+print (b %in% a)
+
+M = matrix(c(1, 2, 3, 4), 2, 2, byrow = TRUE)
+print (M %*% t(M))
+```
+
+# DATA TYPES
+
+R has 5 basic data types:
+      
+      (a) Character: It represents the string values.
+      
+      (b) Numeric: Numeric values are nothing but decimal values.
+      
+      (c) Integer: It contains positive or negative whole numbers. It is signified by "int"
+      
+      (d) Logical: It is mainly created when comparing two variables.
+      
+      (e) Complex: Complex numbers are written as "x+yj" 
+               
+          Where "x" is the real part,
+                "j" is the iota,
+                "y" is the imaginary part
+                
+```{r}
+a = 'hello' #character
+b = 44.8 # numeric
+c = as.integer(25) # integer
+d = b > c #logical
+e = 2+4i #complex
+
+print(class(a))
+print(class(b))
+print(class(c))
+print(class(d))
+print(class(e))
+```
+
+(a) If we want to convert numerical values into integer then we will have to use 'as.integer()' function and this function will also round off all the decimal numbers to integers.
+
+(b) If we want to convert objects into characters then we will have to use 'as.character()' function.
+
+```{r}
+f = as.integer(b)
+g = as.character(c)
+print(f)
+print(g)
+print(class(f))
+print(class(g))
+```
+
+```{r}
+#Assignment: Create two vectors named "Tableau.students", "R.Students". 
+
+# Name the students who didn't take Tableau classes.
+
+
+```
